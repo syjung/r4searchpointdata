@@ -15,6 +15,10 @@
 
 search_point <- function(clientid) {
 
+  require(DBI)
+  require(rJava)
+  require(RJDBC)
+
 	hive.class.path = list.files(path=c("/apps/hive/lib"), pattern="jar", full.names=T)
 	hadoop.lib.path = list.files(path=c("/apps/hadoop/lib"), pattern="jar", full.names=T)
 	hadoop.class.path = list.files(path=c("/apps/hadoop"), pattern="jar", full.names=T)
