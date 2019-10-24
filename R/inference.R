@@ -2,6 +2,10 @@
 #'
 #' search_point function will calculate mom estimate for the shape parameter "k" and the scale parameter "theta" by using given sample.
 #'
+#' @import rJava
+#' @import DBI
+#' @import RJDBC
+#'
 #' @param clientid the given sample to calculate the estimate of the parameters.
 #' @return data.frame
 #' @examples
@@ -11,9 +15,9 @@
 
 search_point <- function(clientid) {
 
-	require(DBI)
-	require(rJava)
-	require(RJDBC)
+  #requireNamespace(DBI)
+  #requireNamespace(rJava)
+  #requireNamespace(RJDBC)
 
 	hive.class.path = list.files(path=c("/apps/hive/lib"), pattern="jar", full.names=T)
 	hadoop.lib.path = list.files(path=c("/apps/hadoop/lib"), pattern="jar", full.names=T)
