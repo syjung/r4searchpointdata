@@ -15,10 +15,6 @@
 
 search_point <- function(clientid) {
 
-  #requireNamespace(DBI)
-  #requireNamespace(rJava)
-  #requireNamespace(RJDBC)
-
 	hive.class.path = list.files(path=c("/apps/hive/lib"), pattern="jar", full.names=T)
 	hadoop.lib.path = list.files(path=c("/apps/hadoop/lib"), pattern="jar", full.names=T)
 	hadoop.class.path = list.files(path=c("/apps/hadoop"), pattern="jar", full.names=T)
