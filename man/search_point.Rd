@@ -4,10 +4,14 @@
 \alias{search_point}
 \title{Method of Moments Estimator for gamma dist.}
 \usage{
-search_point(clientid)
+search_point(sclist, from, ...)
 }
 \arguments{
-\item{clientid}{the given sample to calculate the estimate of the parameters.}
+\item{sclist}{: client list}
+
+\item{from}{: start date}
+
+\item{...}{: end date}
 }
 \value{
 data.frame
@@ -16,6 +20,6 @@ data.frame
 search_point function will calculate mom estimate for the shape parameter "k" and the scale parameter "theta" by using given sample.
 }
 \examples{
-clientid <- '00000220d02544fffefbc4bf'
-search_point(clientid)
+sclist <- c('00000220d02544fffefbc4bf', '00000220d02544fffefc768c');
+search_point(sclist, '2019-09-01', '2019-09-12')
 }

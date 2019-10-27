@@ -6,26 +6,38 @@
 #' @import DBI
 #' @import RJDBC
 #'
-#' @param clientid the given sample to calculate the estimate of the parameters.
+#' @param sclist : client list
+#' @param from : start date
+#' @param  ... : end date
 #' @return data.frame
 #' @examples
-#' clientid <- '00000220d02544fffefbc4bf'
-#' search_point(clientid)
+#' sclist <- c('00000220d02544fffefbc4bf', '00000220d02544fffefc768c');
+#' search_point(sclist, '2019-09-01', '2019-09-12')
 #' @export
 
-search_point <- function(clientid) {
+search_point <- function(sclist, from, ...) {
 
-	hive.class.path = list.files(path=c("/apps/hive/lib"), pattern="jar", full.names=T)
-	hadoop.lib.path = list.files(path=c("/apps/hadoop/lib"), pattern="jar", full.names=T)
-	hadoop.class.path = list.files(path=c("/apps/hadoop"), pattern="jar", full.names=T)
-	class.path = c(hive.class.path, hadoop.lib.path, hadoop.class.path);
-	.jinit(classpath = class.path)
+  prequery <- "select sclientid, ddate, skey, sval from p_point_data_h where"
 
-	drv <- JDBC("org.apache.hive.jdbc.HiveDriver", "/Users/syjung/Downloads/hive-jdbc-3.1.0.3.1.4.6-1-standalone.jar", identifier.quote="'")
-	conn <- dbConnect(drv, "jdbc:hive2://192.168.7.164:10000/default","hive", " !Hive1357")
+  incaluse <- paste("'", paste(sclist, collapse = "','"), "'", sep = "")
+  midquery <- sprintf("sclientid in (%s) and", incaluse)
 
-  query <- sprintf("select * from p_point_data_h where sClientId = '%s'", clientid)
-	query_data <- dbGetQuery(conn, query)
-	queryData <- as.data.frame(query_data)
-	return(queryData)
+  args <- list(...)
+  if ( length(args) == 1 ) {
+    query <- sprintf("%s %s to_date(ddate) between '%s' and '%s'", prequery, midquery, from, args[1])
+  } else {
+    query <- sprintf("%s %s to_date(ddate) >= '%s'", prequery, midquery, from)
+  }
+  print(query)
+  hive.class.path = list.files(path=c("/apps/hive/lib"), pattern="jar", full.names=T)
+  hadoop.lib.path = list.files(path=c("/apps/hadoop/lib"), pattern="jar", full.names=T)
+  hadoop.class.path = list.files(path=c("/apps/hadoop"), pattern="jar", full.names=T)
+  class.path = c(hive.class.path, hadoop.lib.path, hadoop.class.path);
+  .jinit(classpath = class.path)
+
+  drv <- JDBC("org.apache.hive.jdbc.HiveDriver", "/Users/syjung/Downloads/hive-jdbc-3.1.0.3.1.4.6-1-standalone.jar", identifier.quote="'")
+  conn <- dbConnect(drv, "jdbc:hive2://192.168.7.164:10000/default","hive", " !Hive1357")
+
+  query_data <- dbGetQuery(conn, query)
+  return(query_data)
 }
