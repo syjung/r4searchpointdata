@@ -35,7 +35,7 @@ search_point <- function(sclist, from, ...) {
   class.path = c(hive.class.path, hadoop.lib.path, hadoop.class.path);
   .jinit(classpath = class.path)
 
-  drv <- JDBC("org.apache.hive.jdbc.HiveDriver", "/Users/syjung/Downloads/hive-jdbc-3.1.0.3.1.4.6-1-standalone.jar", identifier.quote="'")
+  drv <- JDBC("org.apache.hive.jdbc.HiveDriver", "/tmp/hive-jdbc-3.1.0.3.1.4.6-1-standalone.jar", identifier.quote="'")
   conn <- dbConnect(drv, "jdbc:hive2://192.168.7.164:10000/default","hive", " !Hive1357")
 
   query_data <- dbGetQuery(conn, query)
